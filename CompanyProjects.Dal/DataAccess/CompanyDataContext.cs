@@ -1,13 +1,8 @@
-﻿using CompanyProjects.Model;
-using CompanyProjects.ModelsConfiguration;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
+using CompanyProjects.Dal.Model;
+using CompanyProjects.Dal.ModelsConfiguration;
 
-namespace CompanyProjects.DataAccess
+namespace CompanyProjects.Dal.DataAccess
 {
     class CompanyDataContext : DbContext
     {

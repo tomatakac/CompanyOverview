@@ -1,8 +1,7 @@
-namespace CompanyProjects.Migrations
+using System.Data.Entity.Migrations;
+
+namespace CompanyProjects.Dal.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class addedUserForLogin2 : DbMigration
     {
         public override void Up()

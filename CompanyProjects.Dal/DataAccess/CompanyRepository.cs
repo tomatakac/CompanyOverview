@@ -1,12 +1,9 @@
-﻿using CompanyProjects.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CompanyProjects.Dal.Model;
 
-namespace CompanyProjects.DataAccess
+namespace CompanyProjects.Dal.DataAccess
 {
     class CompanyRepository : IDisposable
     {

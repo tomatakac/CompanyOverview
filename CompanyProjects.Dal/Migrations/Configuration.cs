@@ -1,18 +1,16 @@
-namespace CompanyProjects.Migrations
-{
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+using System.Data.Entity.Migrations;
+using CompanyProjects.Dal.DataAccess;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<CompanyProjects.DataAccess.CompanyDataContext>
+namespace CompanyProjects.Dal.Migrations
+{
+    internal sealed class Configuration : DbMigrationsConfiguration<CompanyDataContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(CompanyProjects.DataAccess.CompanyDataContext context)
+        protected override void Seed(CompanyDataContext context)
         {
             //  This method will be called after migrating to the latest version.
 

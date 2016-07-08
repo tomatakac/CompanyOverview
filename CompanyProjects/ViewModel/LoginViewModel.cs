@@ -15,11 +15,10 @@ namespace CompanyProjects.ViewModel
 {
     class LoginViewModel : ViewModelBase
     {
-        CompanyDataContext db;
+        private CompanyDataContext _dataContext;
 
         public LoginViewModel()
         {
-            db = new CompanyDataContext();
             LoginCommand = new RelayCommand(Login);
             RegistrationCommand = new RelayCommand(RegistrationCommandExecute);
         }
@@ -110,7 +109,10 @@ namespace CompanyProjects.ViewModel
                 //MessageBox.Show(PasswordInVM);
                 string pass = GetSHA512(PasswordInVM);
                 User user = null;
-                user = db.User.FirstOrDefault(i => i.Username == UsernameLogin);
+                using (_dataContext = new CompanyDataContext())
+                {
+                    user = _dataContext.User.FirstOrDefault(i => i.Username == UsernameLogin); 
+                }
 
                 if (user != null)
                 {
@@ -169,7 +171,8 @@ namespace CompanyProjects.ViewModel
                 string PasswordInVMRepeat = ConvertToUnsecureString(secureString2);
                 //MessageBox.Show(PasswordInVMRepeat);
 
-                try {
+                try
+                {
                     User user = new User();
                     user.Username = UsernameRegistration;
                     user.Name = NameRegistration;
@@ -180,35 +183,40 @@ namespace CompanyProjects.ViewModel
                         {
                             user.Password = GetSHA512(PasswordInVM);
                             User userReg = null;
-                            userReg = db.User.FirstOrDefault(i => i.Username == UsernameRegistration);
-                            if (userReg == null)
+                            using (_dataContext = new CompanyDataContext())
                             {
-                                if (!String.IsNullOrEmpty(UsernameRegistration) && !String.IsNullOrEmpty(NameRegistration) && !String.IsNullOrEmpty(Email)) {
-                                    try
+                                userReg = _dataContext.User.FirstOrDefault(i => i.Username == UsernameRegistration);
+                                if (userReg == null)
+                                {
+                                    if (!String.IsNullOrEmpty(UsernameRegistration) &&
+                                        !String.IsNullOrEmpty(NameRegistration) && !String.IsNullOrEmpty(Email))
                                     {
-                                        db.User.Add(user);
-                                        db.SaveChanges();
+                                        try
+                                        {
+                                            _dataContext.User.Add(user);
+                                            _dataContext.SaveChanges();
 
-                                        MessageBox.Show("Registracija uspesno obavljena");
-                                        MainWindow mw = new MainWindow();
-                                        mw.Show();
-                                        CloseAction();
+                                            MessageBox.Show("Registracija uspesno obavljena");
+                                            MainWindow mw = new MainWindow();
+                                            mw.Show();
+                                            CloseAction();
+                                        }
+                                        catch
+                                        {
+                                            MessageBox.Show("Neuspesna registracija! Pokusajte ponovo");
+                                            //user = null;
+                                            //db.Dispose();
+                                        }
                                     }
-                                    catch
+                                    else
                                     {
-                                        MessageBox.Show("Neuspesna registracija! Pokusajte ponovo");
-                                        //user = null;
-                                        //db.Dispose();
+                                        MessageBox.Show("Niste uneli sva polja!");
                                     }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Niste uneli sva polja!");
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show("Postoji korisnik sa ovim Korisnickim imenom!");
+                                    MessageBox.Show("Postoji korisnik sa ovim Korisnickim imenom!");
+                                } 
                             }
                         }
                         else
@@ -217,7 +225,10 @@ namespace CompanyProjects.ViewModel
                         }
                     }
                 }
-                catch { }             
+                catch(Exception ex)
+                {
+                    
+                }             
             }            
         }        
         private static string GetSHA512(string String)
