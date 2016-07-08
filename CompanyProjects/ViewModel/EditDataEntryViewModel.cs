@@ -1,6 +1,4 @@
-﻿using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,12 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
-    class EditDataEntryViewModel :ViewModelBase
+    public class EditDataEntryViewModel :ViewModelBase
     {
-        private CompanyDataContext db = new CompanyDataContext();
+        private CompanyDataContext _dataContext;
         CompanyRepository compRepo = new CompanyRepository();
         DataEntryRepository dataEntryRepo = new DataEntryRepository();
 
@@ -27,11 +27,14 @@ namespace CompanyProjects.ViewModel
 
             TextInput = CurrentGridSelectedItem.TextInput;
             CompanySelectedValue = compRepo.GetCompany(GridSelectedItem.CompanyId);
-            ProjectSelectedValue = db.Project.FirstOrDefault(x=>x.ProjectId == GridSelectedItem.ProjectId);
-            FileName = GridSelectedItem.TitleDataProject;
-            FilePath = GridSelectedItem.DataProject;
+            using (_dataContext = new CompanyDataContext())
+            {
+                ProjectSelectedValue = _dataContext.Project.FirstOrDefault(x => x.ProjectId == GridSelectedItem.ProjectId);
+                FileName = GridSelectedItem.TitleDataProject;
+                FilePath = GridSelectedItem.DataProject;
 
-            AvaivbleCompanies = new ObservableCollection<Company>(db.Company);
+                AvaivbleCompanies = new ObservableCollection<Company>(_dataContext.Company); 
+            }
             AvaivbleProjects = new ObservableCollection<Project>(CompanySelectedValue.AppropriateProjects);
         }
 

@@ -1,5 +1,5 @@
 using System.Data.Entity.Migrations;
-using CompanyProjects.Dal.DataAccess;
+using CompanyProject.Domain.DataAccess;
 
 namespace CompanyProjects.Dal.Migrations
 {

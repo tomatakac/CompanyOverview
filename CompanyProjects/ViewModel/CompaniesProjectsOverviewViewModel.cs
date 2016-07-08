@@ -1,6 +1,4 @@
-﻿using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,19 +9,23 @@ using System.Windows.Input;
 using System.ComponentModel;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
-    class CompaniesProjectsOverviewViewModel : ViewModelBase
+    public class CompaniesProjectsOverviewViewModel : ViewModelBase
     {
-        private CompanyDataContext db;// = new CompanyDataContext();
+        private CompanyDataContext _dataContext;// = new CompanyDataContext();
         //private ProjectRepository _prRepository = new ProjectRepository();
         //private CompanyRepository _companyRepository;
 
         public CompaniesProjectsOverviewViewModel()
         {
-            db = new CompanyDataContext();
-            AllCompanies = new ObservableCollection<Company>(db.Company);
+            using (_dataContext = new CompanyDataContext())
+            {
+                AllCompanies = new ObservableCollection<Company>(_dataContext.Company); 
+            }
             //_companyRepository = new CompanyRepository();
         }
 
@@ -86,7 +88,7 @@ namespace CompanyProjects.ViewModel
                 {
                     if (GridSelectedItem != null)
                     {
-                        //this.AllProjects = new ObservableCollection<Project>(db.Project.Where(i => i.FKCompanyId == _gridSelectedItem.CompanyId));
+                        //this.AllProjects = new ObservableCollection<Project>(_dataContext.Project.Where(i => i.FKCompanyId == _gridSelectedItem.CompanyId));
                         using (ProjectRepository pr2 = new ProjectRepository())
                         {
                             IList<Project> variable = pr2.GetProjects().Where(i => i.FKCompanyId == GridSelectedItem.CompanyId).ToList();
@@ -171,37 +173,40 @@ namespace CompanyProjects.ViewModel
         }
         void RemoveCompanyCommandExecute()
         {
-            var query = db.DataEntry.FirstOrDefault(x=> x.CompanyId == GridSelectedItem.CompanyId);
-            if(query != null)
+            using (_dataContext = new CompanyDataContext())
             {
-                MessageBox.Show("Kompanija se nalazi u Unosu na pocetnoj strani, molimo obrisite je prvo odatle.");
-            }
-            else
-            {
-                MessageBoxResult m = MessageBox.Show(String.Format("Da li ste sigurni da zelite da obrisete Kompaniju {0}?", GridSelectedItem.TitleCompany), "Obrisi Kompaniju", MessageBoxButton.YesNoCancel);
-
-                if (m == MessageBoxResult.Yes)
+                var query = _dataContext.DataEntry.FirstOrDefault(x => x.CompanyId == GridSelectedItem.CompanyId);
+                if (query != null)
                 {
-                    var variable = db.Project.Where(q => q.FKCompanyId == GridSelectedItem.CompanyId).Select(q => q);
-
-                    foreach (var item in variable)
-                    {
-                        db.Project.Remove(item);
-                    }
-                    
-                    db.Company.Attach(GridSelectedItem);
-                    db.Company.Remove(GridSelectedItem);
-                    db.SaveChanges();
-
-                    var prom = AllCompanies.IndexOf(GridSelectedItem);
-                    if (prom > 0) GridSelectedItem = AllCompanies[prom - 1];
-                    else GridSelectedItem = null;
-
-
-                    AllCompanies.Remove(AllCompanies[prom]);
-                    if (AllCompanies.Count == 0)
-                        this.AllProjects = new ObservableCollection<Project>();
+                    MessageBox.Show("Kompanija se nalazi u Unosu na pocetnoj strani, molimo obrisite je prvo odatle.");
                 }
+                else
+                {
+                    MessageBoxResult m = MessageBox.Show(String.Format("Da li ste sigurni da zelite da obrisete Kompaniju {0}?", GridSelectedItem.TitleCompany), "Obrisi Kompaniju", MessageBoxButton.YesNoCancel);
+
+                    if (m == MessageBoxResult.Yes)
+                    {
+                        var variable = _dataContext.Project.Where(q => q.FKCompanyId == GridSelectedItem.CompanyId).Select(q => q);
+
+                        foreach (var item in variable)
+                        {
+                            _dataContext.Project.Remove(item);
+                        }
+
+                        _dataContext.Company.Attach(GridSelectedItem);
+                        _dataContext.Company.Remove(GridSelectedItem);
+                        _dataContext.SaveChanges();
+
+                        var prom = AllCompanies.IndexOf(GridSelectedItem);
+                        if (prom > 0) GridSelectedItem = AllCompanies[prom - 1];
+                        else GridSelectedItem = null;
+
+
+                        AllCompanies.Remove(AllCompanies[prom]);
+                        if (AllCompanies.Count == 0)
+                            this.AllProjects = new ObservableCollection<Project>();
+                    }
+                } 
             }
         }
 
@@ -231,8 +236,11 @@ namespace CompanyProjects.ViewModel
         private void Window_Closing2(object sender, CancelEventArgs e)
         {
             var prom = AllCompanies.IndexOf(GridSelectedItem);
-            
-            AllCompanies = new ObservableCollection<Company>(db.Company);
+
+            using (_dataContext = new CompanyDataContext())
+            {
+                AllCompanies = new ObservableCollection<Company>(_dataContext.Company); 
+            }
 
             GridSelectedItem = AllCompanies[prom];
             if (GridSelectedItem != null)
@@ -242,7 +250,7 @@ namespace CompanyProjects.ViewModel
                     IList<Project> variable = pr2.GetProjects().Where(i => i.FKCompanyId == GridSelectedItem.CompanyId).ToList();
                     this.AllProjects = new ObservableCollection<Project>(variable);
                 }
-                //this.AllProjects = new ObservableCollection<Project>(db.Project.Where(i => i.FKCompanyId == GridSelectedItem.CompanyId));
+                //this.AllProjects = new ObservableCollection<Project>(_dataContext.Project.Where(i => i.FKCompanyId == GridSelectedItem.CompanyId));
             }
         }
 
@@ -302,29 +310,32 @@ namespace CompanyProjects.ViewModel
         }
         void RemoveProjectCommandExecute()
         {
-            var query = db.DataEntry.FirstOrDefault(x => x.ProjectId == ProjectGridSelectedItem.ProjectId);
-            if (query != null)
+            using (_dataContext = new CompanyDataContext())
             {
-                MessageBox.Show("Projekat se nalazi u Unosu na pocetnoj strani, molimo obrisite ga prvo odatle.");
-            }
-            else
-            {
-                MessageBoxResult m = MessageBox.Show(String.Format("Da li ste sigurni da zelite da obrisete Projekat: {0}?", ProjectGridSelectedItem.TitleProject), "Obrisi Projekat", MessageBoxButton.YesNoCancel);
-
-                if (m == MessageBoxResult.Yes)
+                var query = _dataContext.DataEntry.FirstOrDefault(x => x.ProjectId == ProjectGridSelectedItem.ProjectId);
+                if (query != null)
                 {
-                    //db.Project.Attach(ProjectGridSelectedItem);                    
-                    //db.Project.Remove(ProjectGridSelectedItem);
-                    
-                    var variable = db.Project.Where(q => q.ProjectId == ProjectGridSelectedItem.ProjectId).Select(q => q);
-                    foreach (var item in variable)
-                    {
-                        db.Project.Remove(item);
-                    }
-                    db.SaveChanges();
-
-                    AllProjects.Remove(ProjectGridSelectedItem);
+                    MessageBox.Show("Projekat se nalazi u Unosu na pocetnoj strani, molimo obrisite ga prvo odatle.");
                 }
+                else
+                {
+                    MessageBoxResult m = MessageBox.Show(String.Format("Da li ste sigurni da zelite da obrisete Projekat: {0}?", ProjectGridSelectedItem.TitleProject), "Obrisi Projekat", MessageBoxButton.YesNoCancel);
+
+                    if (m == MessageBoxResult.Yes)
+                    {
+                        //_dataContext.Project.Attach(ProjectGridSelectedItem);                    
+                        //_dataContext.Project.Remove(ProjectGridSelectedItem);
+
+                        var variable = _dataContext.Project.Where(q => q.ProjectId == ProjectGridSelectedItem.ProjectId).Select(q => q);
+                        foreach (var item in variable)
+                        {
+                            _dataContext.Project.Remove(item);
+                        }
+                        _dataContext.SaveChanges();
+
+                        AllProjects.Remove(ProjectGridSelectedItem);
+                    }
+                } 
             }
         }
 

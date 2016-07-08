@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CompanyProjects.Dal.Model
+namespace CompanyProject.Domain.Model
 {
     public class Project
     {

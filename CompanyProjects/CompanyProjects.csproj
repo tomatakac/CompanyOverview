@@ -186,7 +186,16 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CompanyProject.Domain\CompanyProject.Domain.csproj">
+      <Project>{4e0b2834-b8e4-4ade-b284-c8bee40fd1ad}</Project>
+      <Name>CompanyProject.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompanyProjects.Dal\CompanyProjects.Dal.csproj">
+      <Project>{21cc2226-4925-4642-b9d1-42eeafd0fc28}</Project>
+      <Name>CompanyProjects.Dal</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

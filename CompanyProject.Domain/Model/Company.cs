@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CompanyProjects.Dal.Model
+namespace CompanyProject.Domain.Model
 {
     public class Company
     {

@@ -1,6 +1,4 @@
-﻿using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
-    class ChangeProjectViewModel : ViewModelBase
+    public class ChangeProjectViewModel : ViewModelBase
     {        
         //readonly ProjectRepository _projectRepository;        
         //readonly DataEntryRepository _dataEntryRepository;
@@ -25,9 +25,9 @@ namespace CompanyProjects.ViewModel
             _projectSelectedValue = ProjectGridSelectedItem;
             _titleProject = ProjectGridSelectedItem.TitleProject;
             _textProject = ProjectGridSelectedItem.TextProject;
-            using (CompanyDataContext db = new CompanyDataContext())
+            using (var dataContext = new CompanyDataContext())
             {
-                FileName = db.Company.FirstOrDefault(i => i.CompanyId == ProjectGridSelectedItem.FKCompanyId).TitleCompany;
+                FileName = dataContext.Company.FirstOrDefault(i => i.CompanyId == ProjectGridSelectedItem.FKCompanyId).TitleCompany;
             }
 
             _startDate = ProjectGridSelectedItem.StartDate;

@@ -1,7 +1,5 @@
 ﻿using CompanyProjects;
 using CompanyProjects.ViewModel;
-using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,21 +8,22 @@ using System.Text;
 using System.Data.Entity.Core.Objects;
 using System.Windows.Input;
 using System.Windows;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
-    class AddProjectViewModel : ViewModelBase
+    public class AddProjectViewModel : ViewModelBase
     {
         ObservableCollection<Project> AllProjectsCurrent;
 
-        readonly CompanyDataContext db;
+        readonly CompanyDataContext _dataContext;
         readonly CompanyRepository _companyRepository;
         readonly ProjectRepository _projectRepository;
         public AddProjectViewModel(ObservableCollection<Project> AllProjects, ObservableCollection<Company> gridGridSelectedCollection)
         {
             _companyRepository = new CompanyRepository();
             _projectRepository = new ProjectRepository();
-            db = new CompanyDataContext();
 
             AllAvaivbleCompaniesCurrent = new ObservableCollection<Company>(_companyRepository.GetCompanies());
             AllProjectsCurrent = AllProjects;
@@ -189,7 +188,7 @@ namespace CompanyProjects.ViewModel
 
 
             _projectRepository.AddProject(proj, gridCurrentGridSelectedCollection[0]);
-            //Company cmp = db.Company.Find(gridCurrentGridSelectedCollection[0].CompanyId);  //_companyRepository.GetCompany(CompanySelectedValue.CompanyId);
+            //Company cmp = _dataContext.Company.Find(gridCurrentGridSelectedCollection[0].CompanyId);  //_companyRepository.GetCompany(CompanySelectedValue.CompanyId);
             //cmp.AppropriateProjects.Add(proj);
             //_companyRepository.UpdateCompany(cmp.CompanyId, proj);
 

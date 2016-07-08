@@ -1,16 +1,16 @@
-﻿using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
-    class ChangeCompanyViewModel : ViewModelBase
+    public class ChangeCompanyViewModel : ViewModelBase
     {
         
         //Company CurrentGridSelectedItem;

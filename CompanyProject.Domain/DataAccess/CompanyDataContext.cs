@@ -1,10 +1,10 @@
 ﻿using System.Data.Entity;
-using CompanyProjects.Dal.Model;
-using CompanyProjects.Dal.ModelsConfiguration;
+using CompanyProject.Domain.Model;
+using CompanyProject.Domain.ModelsConfiguration;
 
-namespace CompanyProjects.Dal.DataAccess
+namespace CompanyProject.Domain.DataAccess
 {
-    class CompanyDataContext : DbContext
+    public class CompanyDataContext : DbContext
     {
         public CompanyDataContext() : base ("CompanyDataConnection")
         {

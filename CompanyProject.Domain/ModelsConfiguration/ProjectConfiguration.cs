@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity.ModelConfiguration;
-using CompanyProjects.Dal.Model;
+using CompanyProject.Domain.Model;
 
-namespace CompanyProjects.Dal.ModelsConfiguration
+namespace CompanyProject.Domain.ModelsConfiguration
 {
-    class ProjectConfiguration : EntityTypeConfiguration<Project>
+    public class ProjectConfiguration : EntityTypeConfiguration<Project>
     {
-        internal ProjectConfiguration()
+        public ProjectConfiguration()
         {
             this.HasRequired(a => a.AppropriateCompany)
                            .WithMany(r => r.AppropriateProjects)

@@ -1,7 +1,5 @@
 ﻿using CompanyProjects;
 using CompanyProjects.ViewModel;
-using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,20 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
     class AddCompanyViewModel : ViewModelBase
     {
         readonly CompanyRepository _companyRepository;
-        readonly CompanyDataContext _repository;
+        private CompanyDataContext _dataContext;
         public ObservableCollection<Company> AllCompaniesCurrent;
 
         public AddCompanyViewModel(ObservableCollection<Company> AllCompanies)
         {
             AllCompaniesCurrent = AllCompanies;
             _companyRepository = new CompanyRepository();
-            _repository = new CompanyDataContext();
         }
 
         #region Properties
@@ -70,7 +69,10 @@ namespace CompanyProjects.ViewModel
             
             AllCompaniesCurrent.Add(cmp);          
             _companyRepository.AddCompany(cmp);
-            _repository.Company.Attach(cmp);
+            using (_dataContext = new CompanyDataContext())
+            {
+                _dataContext.Company.Attach(cmp); 
+            }
 
             CloseAction();
         }

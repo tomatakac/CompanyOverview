@@ -1,6 +1,4 @@
-﻿using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
-using CompanyProjects.ViewModel;
+﻿using CompanyProjects.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,10 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
-    class AddDataEntryViewModel : ViewModelBase
+    public class AddDataEntryViewModel : ViewModelBase
     {
         readonly CompanyRepository _companyRepository;
         readonly DataEntryRepository _dataEntryrepository;

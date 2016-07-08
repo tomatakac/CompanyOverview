@@ -1,7 +1,5 @@
 ﻿using CompanyProjects;
 using CompanyProjects.ViewModel;
-using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
@@ -10,14 +8,16 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
 
 
-    class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
-        private CompanyDataContext db = new CompanyDataContext();
+        private CompanyDataContext _dataContext;
 
         public MainViewModel()
         {
@@ -291,31 +291,34 @@ namespace CompanyProjects.ViewModel
             }
         }
         void SearchCommandExecute()
-        {         
-            IEnumerable<DataEntry> filterCompanies = db.DataEntry;
-            if (FilterCompanySelectedValue != null)
+        {
+            using (_dataContext = new CompanyDataContext())
             {
-                filterCompanies = filterCompanies.Where(chanel => chanel.CompanyId == (FilterCompanySelectedValue.CompanyId));
-            }
+                IEnumerable<DataEntry> filterCompanies = _dataContext.DataEntry;
+                if (FilterCompanySelectedValue != null)
+                {
+                    filterCompanies = filterCompanies.Where(chanel => chanel.CompanyId == (FilterCompanySelectedValue.CompanyId));
+                }
 
-            if (ProjectFilterSelectedValue != null)
-            {
-                filterCompanies = filterCompanies.Where(chanel => chanel.ProjectId == (ProjectFilterSelectedValue.ProjectId));
-            }
+                if (ProjectFilterSelectedValue != null)
+                {
+                    filterCompanies = filterCompanies.Where(chanel => chanel.ProjectId == (ProjectFilterSelectedValue.ProjectId));
+                }
 
-            if (StartFilterDate != null)
-            {
-                filterCompanies = (from o in filterCompanies where o.Date >= StartFilterDate select o);
-            }
+                if (StartFilterDate != null)
+                {
+                    filterCompanies = (from o in filterCompanies where o.Date >= StartFilterDate select o);
+                }
 
-            if (EndFilterDate != null)
-            {
-                filterCompanies = (from o in filterCompanies where o.Date <= EndFilterDate select o);
-            }
+                if (EndFilterDate != null)
+                {
+                    filterCompanies = (from o in filterCompanies where o.Date <= EndFilterDate select o);
+                }
 
-            if (filterCompanies != null)
-            {
-                AllDataEntries = new ObservableCollection<DataEntry>(filterCompanies);
+                if (filterCompanies != null)
+                {
+                    AllDataEntries = new ObservableCollection<DataEntry>(filterCompanies);
+                } 
             }
         }
         public bool SearchCommandCanExecute
@@ -370,11 +373,14 @@ namespace CompanyProjects.ViewModel
 
             if (m == MessageBoxResult.Yes)
             {
-                db.DataEntry.Attach(GridSelectedItem);
-                db.DataEntry.Remove(GridSelectedItem);
-                db.SaveChanges();
+                using (_dataContext = new CompanyDataContext())
+                {
+                    _dataContext.DataEntry.Attach(GridSelectedItem);
+                    _dataContext.DataEntry.Remove(GridSelectedItem);
+                    _dataContext.SaveChanges(); 
+                }
 
-                //de.RemoveDataEntry(GridSelectedItem); Ne radi opet onaj deo sa db.SaveChanges();!!
+                //de.RemoveDataEntry(GridSelectedItem); Ne radi opet onaj deo sa _dataContext.SaveChanges();!!
                 AllDataEntries.Remove(GridSelectedItem);
             }
         }
@@ -435,11 +441,14 @@ namespace CompanyProjects.ViewModel
 
         void initilazeFilter()
         {
-            db = new CompanyDataContext();
-            FilterAllCompanies = new ObservableCollection<Company>(db.Company);
-            FilterAvaivbleProjects = new ObservableCollection<Project>(db.Project);
-            AllDataEntries = new ObservableCollection<DataEntry>(db.DataEntry);
+            using (_dataContext = new CompanyDataContext())
+            {
+                _dataContext = new CompanyDataContext();
+                FilterAllCompanies = new ObservableCollection<Company>(_dataContext.Company);
+                FilterAvaivbleProjects = new ObservableCollection<Project>(_dataContext.Project);
+                AllDataEntries = new ObservableCollection<DataEntry>(_dataContext.DataEntry);
 
+            }
             FilterCompanySelectedValue = null;
             ProjectFilterSelectedValue = null;
 

@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity.ModelConfiguration;
-using CompanyProjects.Dal.Model;
+using CompanyProject.Domain.Model;
 
-namespace CompanyProjects.Dal.ModelsConfiguration
+namespace CompanyProject.Domain.ModelsConfiguration
 {
-    class DataEntryConfiguration : EntityTypeConfiguration<DataEntry>
+    public class DataEntryConfiguration : EntityTypeConfiguration<DataEntry>
     {
-        internal DataEntryConfiguration()
+        public DataEntryConfiguration()
         {
             //this.HasRequired(a => a.AppropriateCompany)
             //               .WithMany(r => r.AppropriateDataEntries)

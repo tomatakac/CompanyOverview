@@ -1,5 +1,4 @@
-﻿using CompanyProjects.DataAccess;
-using CompanyProjects.Model;
+﻿
 using MvvmPassword;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CompanyProject.Domain.DataAccess;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects.ViewModel
 {
-    class LoginViewModel : ViewModelBase
+    public class LoginViewModel : ViewModelBase
     {
         private CompanyDataContext _dataContext;
 

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CompanyProjects.Dal.Model
+namespace CompanyProject.Domain.Model
 {
-    class User
+    public class User
     {
         // --- PRIMARNI KLJUCEVI ----
         public int UserId { get; set; }

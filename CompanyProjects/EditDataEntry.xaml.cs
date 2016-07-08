@@ -1,5 +1,4 @@
-﻿using CompanyProjects.Model;
-using CompanyProjects.ViewModel;
+﻿using CompanyProjects.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CompanyProject.Domain.Model;
 
 namespace CompanyProjects
 {

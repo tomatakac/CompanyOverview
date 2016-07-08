@@ -49,10 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\CompanyDataContext.cs" />
-    <Compile Include="DataAccess\CompanyRepository.cs" />
-    <Compile Include="DataAccess\DataEntryRepository.cs" />
-    <Compile Include="DataAccess\ProjectRepository.cs" />
     <Compile Include="Migrations\201606280847027_Initial.cs" />
     <Compile Include="Migrations\201606280847027_Initial.Designer.cs">
       <DependentUpon>201606280847027_Initial.cs</DependentUpon>
@@ -70,17 +66,12 @@
       <DependentUpon>201607011450174_addedUserForLogin3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="ModelsConfiguration\CompanyConfiguration.cs" />
-    <Compile Include="ModelsConfiguration\DataEntryConfiguration.cs" />
-    <Compile Include="ModelsConfiguration\ProjectConfiguration.cs" />
-    <Compile Include="Model\Company.cs" />
-    <Compile Include="Model\DataEntry.cs" />
-    <Compile Include="Model\Project.cs" />
-    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +87,12 @@
     <EmbeddedResource Include="Migrations\201607011450174_addedUserForLogin3.resx">
       <DependentUpon>201607011450174_addedUserForLogin3.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompanyProject.Domain\CompanyProject.Domain.csproj">
+      <Project>{4e0b2834-b8e4-4ade-b284-c8bee40fd1ad}</Project>
+      <Name>CompanyProject.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
