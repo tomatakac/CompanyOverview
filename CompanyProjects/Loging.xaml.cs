@@ -25,11 +25,11 @@ namespace CompanyProjects
         {
             InitializeComponent();
 
-            var variable = new LoginViewModel();
-            this.DataContext = variable;
+            //var variable = new LoginViewModel();
+            //this.DataContext = variable;
 
-            if (variable.CloseAction == null)
-                variable.CloseAction = new Action(() => this.Close());
+            //if (variable.CloseAction == null)
+            //    variable.CloseAction = new Action(() => this.Close());
         }
         public System.Security.SecureString Password
         {

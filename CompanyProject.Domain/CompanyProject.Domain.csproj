@@ -53,23 +53,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompositionRoot.cs" />
     <Compile Include="DataAccess\CompanyDataContext.cs" />
     <Compile Include="DataAccess\CompanyRepository.cs" />
     <Compile Include="DataAccess\DataEntryRepository.cs" />
     <Compile Include="DataAccess\ProjectRepository.cs" />
+    <Compile Include="Interfaces\ICompany.cs" />
     <Compile Include="ModelsConfiguration\CompanyConfiguration.cs" />
     <Compile Include="ModelsConfiguration\DataEntryConfiguration.cs" />
     <Compile Include="ModelsConfiguration\ProjectConfiguration.cs" />
     <Compile Include="Model\Company.cs" />
+    <Compile Include="Model\CustomCompany.cs" />
     <Compile Include="Model\DataEntry.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

@@ -23,9 +23,7 @@ namespace CompanyProjects
     {
         public MainWindow()
         {
-            InitializeComponent();
-            var variable = new MainViewModel();
-            this.DataContext = variable;
+            InitializeComponent();          
         }
     }
 }
